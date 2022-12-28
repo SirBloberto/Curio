@@ -61,12 +61,15 @@ typedef enum Type {
 | :--- | :--- | :--- | :--- |
 | RemoveMember | `Value*` parent `char*` name | `void` | Remove a member by name from an `Object` |
 | RemoveElement | `Value*` parent `int` index | `void` | Remove a element by index from a `Array` |
-### Access
+### Properties
 | Method | Parameters | Return | Description |
 | :--- | :--- | :--- | :--- |
 | ChildCount | `Value*` value | `int` | Get the number of children from `TYPE_OBJECT` or `TYPE_ARRAY` |
 | ChildNames | `Value*` value | `char**` | Get the member names from a `TYPE_OBJECT` |
 | ChildValues | `Value*` value | `Value**` | Get the child values from `TYPE_OBJECT` or `TYPE_ARRAY` |
+### Access
+| Method | Parameters | Return | Description |
+| :--- | :--- | :--- | :--- |
 | GetArrayValue | `Value*` value `int` index | `Value*` | Get value at index from  `TYPE_ARRAY` |
 | GetObjectValue | `Value*` value `char*` name | `Value*` | Get value with name from `TYPE_OBJECT` |
 ### Destroying

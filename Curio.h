@@ -59,6 +59,7 @@ void RemoveElement(Value* parent, unsigned int index);
 unsigned int ChildCount(Value* value);
 char** ChildNames(Value* value);
 Value** ChildValues(Value* value);
+
 Value* GetArrayValue(Value* value, unsigned int index);
 Value* GetObjectValue(Value* value, char* name);
 
