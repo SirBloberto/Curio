@@ -1,7 +1,6 @@
 #include "Curio.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "regex.h"
 
 typedef struct ValueIterator {
     Value value;
@@ -10,7 +9,6 @@ typedef struct ValueIterator {
 
 char* Read(char** string, char stop, int continue_flag);
 int Match(char** string, char* expected);
-int Validate(char* string, char* regex_string);
 
 Value* CurioObject() {
     Value* value = (Value*)malloc(sizeof(ValueIterator));
@@ -289,11 +287,7 @@ Value* Parse(char* filename) {
             }
             if(parent->type != TYPE_OBJECT)
                 return (Value*)((long)0 & printf("[Curio-Parse]: %s(%d). Indentation error. Parent is not an Object", filename, line));
-            if(Validate(Read(&buffer, '\n', 0), "(: ){1,}"))
-                return (Value*)((long)0 & printf("[Curio-Parse]: %s(%d). Object member is missing seperator ': '", filename, line));
             name = Read(&buffer, ':', 1);
-            if(Validate(name, "^[_a-zA-Z][_a-zA-Z0-9]*$"))
-                return (Value*)((long)0 & printf("[Curio-Parse]: %s(%d). Invalid member name", filename, line));
             buffer += 2;
         }
         char character = *buffer++;
@@ -321,8 +315,6 @@ Value* Parse(char* filename) {
         } else if((character >= '0' && character <= '9') || character == '-') {
             char firstCharacter = character;
             buffer--;
-            if(Validate(Read(&buffer, '\n', 0), "^0$|^0.0$|^-?0.[0-9]*[1-9]+$|^-?[1-9][0-9]*(.[0-9]*[1-9]+)?$"))
-                return (Value*)((long)0 & printf("[Curio-Parse]: %s(%d). Value does not match any number pattern", filename, line));
             if(firstCharacter == '-')
                 buffer++;
             long integer = 0;
@@ -399,10 +391,4 @@ int Match(char** string, char* expected) {
         }
     }
     return 1;
-}
-
-int Validate(char* string, char* regex_string) {
-    regex_t regex;
-    regcomp(&regex, regex_string, REG_EXTENDED);
-    return regexec(&regex, string, 0, NULL, 0);
 }
